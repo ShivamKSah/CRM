@@ -1,0 +1,6 @@
+name,email,phone,city,total_orders,total_spend,last_order_date,tags
+Rahul Sharma,rahul.s@example.com,9876543210,Mumbai,5,15000,2023-10-01,VIP,Fashion
+Priya Singh,priya.s@example.com,9876543211,Delhi,2,4500,2023-09-15,New
+Amit Patel,amit.p@example.com,9876543212,Ahmedabad,10,50000,2023-10-05,VIP,Electronics
+Sneha Reddy,sneha.r@example.com,9876543213,Hyderabad,1,1200,2023-08-20,
+Kiran Kumar,kiran.k@example.com,9876543214,Bangalore,8,25000,2023-10-10,VIP,Sports
