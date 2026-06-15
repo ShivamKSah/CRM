@@ -47,6 +47,6 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/seed', seedRoutes);
 
 const PORT = Number(process.env.PORT || 3000);
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Aura backend running on port ${PORT}`);
 });
