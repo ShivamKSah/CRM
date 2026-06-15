@@ -1,8 +1,8 @@
-# ShopReach — AI-Native Mini CRM
+# Aura — AI-Native Mini CRM
 
 ## What I Built
 
-ShopReach is a full-stack CRM for D2C brands in India. Marketers can import customers, build segments (manually or with AI), launch multi-channel campaigns (WhatsApp, SMS, Email, RCS), and watch delivery funnels update in real time. An AI assistant panel helps with targeting ideas, message drafts, and performance questions — with one-click actions to create segments or start campaigns.
+Aura is a full-stack CRM for D2C brands in India. Marketers can import customers, build segments (manually or with AI), launch multi-channel campaigns (WhatsApp, SMS, Email, RCS), and watch delivery funnels update in real time. An AI assistant panel helps with targeting ideas, message drafts, and performance questions — with one-click actions to create segments or start campaigns.
 
 The system is designed as a realistic mini production stack: a React frontend, Express API backed by Supabase (PostgreSQL), a separate channel microservice that simulates message delivery with retries and callbacks, and Gemini (`gemini-2.5-flash`) powering segmentation, copy generation, and the conversational assistant.
 
@@ -136,9 +136,9 @@ Health checks:
 
 | Service | URL |
 |---------|-----|
-| Frontend | `https://shopreach.vercel.app` (update after deploy) |
-| Backend API | `https://shopreach-api.railway.app` (update after deploy) |
-| Channel service | `https://shopreach-channel.railway.app` (update after deploy) |
+| Frontend | `https://aura.vercel.app` (update after deploy) |
+| Backend API | `https://aura-api.railway.app` (update after deploy) |
+| Channel service | `https://aura-channel.railway.app` (update after deploy) |
 
 ## Quick Smoke Test
 
