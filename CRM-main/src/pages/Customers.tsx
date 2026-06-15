@@ -63,16 +63,55 @@ export default function Customers() {
       skipEmptyLines: true,
       complete: async (results) => {
         try {
-          const customers = (results.data as any[]).map(row => ({
-            name: row.name || row.Name,
-            email: row.email || row.Email,
-            phone: row.phone || row.Phone || null,
-            city: row.city || row.City || null,
-            total_orders: parseInt(row.total_orders) || 0,
-            total_spend: parseFloat(row.total_spend) || 0,
-            last_order_date: row.last_order_date || null,
-            tags: row.tags ? row.tags.split(',').map((t: string) => t.trim()) : [],
-          }));
+          const headers = results.meta.fields || [];
+          let hasDirectName = headers.some(h => h.toLowerCase() === 'name');
+          let hasDirectEmail = headers.some(h => h.toLowerCase() === 'email');
+          
+          let mapping: Record<string, string | null> = {};
+          
+          if (!hasDirectName || !hasDirectEmail) {
+            showToast('Mapping columns with AI...');
+            const { mapping: aiMapping } = await customersApi.mapColumns(headers);
+            mapping = aiMapping;
+            
+            const mappedValues = Object.values(mapping);
+            if (!mappedValues.includes('name') || !mappedValues.includes('email')) {
+              showToast(`Couldn't find name/email columns in your CSV. Found: ${headers.join(', ')}. Please ensure your CSV includes a name and email column.`, 'error');
+              setImporting(false);
+              if (fileInputRef.current) fileInputRef.current.value = '';
+              return;
+            }
+          }
+
+          const customers = (results.data as any[]).map(row => {
+            const mappedRow: any = {};
+            
+            if (Object.keys(mapping).length > 0) {
+              for (const [csvHeader, dbField] of Object.entries(mapping)) {
+                if (dbField) mappedRow[dbField] = row[csvHeader];
+              }
+            } else {
+              mappedRow.name = row.name || row.Name;
+              mappedRow.email = row.email || row.Email;
+              mappedRow.phone = row.phone || row.Phone;
+              mappedRow.city = row.city || row.City;
+              mappedRow.total_orders = row.total_orders;
+              mappedRow.total_spend = row.total_spend;
+              mappedRow.last_order_date = row.last_order_date;
+              mappedRow.tags = row.tags;
+            }
+
+            return {
+              name: mappedRow.name,
+              email: mappedRow.email,
+              phone: mappedRow.phone || null,
+              city: mappedRow.city || null,
+              total_orders: parseInt(mappedRow.total_orders) || 0,
+              total_spend: parseFloat(mappedRow.total_spend) || 0,
+              last_order_date: mappedRow.last_order_date || null,
+              tags: typeof mappedRow.tags === 'string' ? mappedRow.tags.split(',').map((t: string) => t.trim()) : [],
+            };
+          });
 
           const CHUNK_SIZE = 1000;
           let totalImported = 0;

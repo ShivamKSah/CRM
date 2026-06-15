@@ -1,8 +1,32 @@
 import { Router } from 'express';
 import { supabase } from '../supabase.js';
 import { handleRouteError } from '../utils/routeError.js';
+import { genAI, GEMINI_MODEL } from '../gemini.js';
 
 const router = Router();
+
+router.post('/map-columns', async (req, res) => {
+  try {
+    const { headers } = req.body;
+    if (!Array.isArray(headers) || headers.length === 0) {
+      return res.status(400).json({ error: 'Array of headers required' });
+    }
+
+    const prompt = `Given a list of CSV column headers, map each to the closest matching field from this list: name, email, phone, city, total_orders, total_spend, last_order_date, tags. If a header doesn't match any field, map it to null. Return ONLY a JSON object mapping each input header to its matched field or null.
+
+Input headers: ${JSON.stringify(headers)}`;
+
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
+    const result = await model.generateContent(prompt);
+    let text = result.response.text();
+    text = text.replace(/```json\n?/, '').replace(/```\n?/, '');
+
+    const mapping = JSON.parse(text);
+    res.json({ mapping });
+  } catch (err) {
+    handleRouteError(res, err, 'Failed to map columns');
+  }
+});
 
 router.post('/bulk', async (req, res) => {
   try {

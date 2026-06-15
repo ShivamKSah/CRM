@@ -21,6 +21,12 @@ export async function apiCall<T>(endpoint: string, options?: RequestInit): Promi
 
 // Customers
 export const customersApi = {
+  mapColumns: (headers: string[]) =>
+    apiCall<{ mapping: Record<string, string | null> }>('/customers/map-columns', {
+      method: 'POST',
+      body: JSON.stringify({ headers }),
+    }),
+
   bulkCreate: (customers: Partial<Customer>[]) =>
     apiCall<{ inserted: number; customers: Customer[] }>('/customers/bulk', {
       method: 'POST',
