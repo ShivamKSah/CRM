@@ -74,8 +74,16 @@ export default function Customers() {
             tags: row.tags ? row.tags.split(',').map((t: string) => t.trim()) : [],
           }));
 
-          await customersApi.bulkCreate(customers);
-          showToast(`Imported ${customers.length} customers`);
+          const CHUNK_SIZE = 1000;
+          let totalImported = 0;
+          
+          for (let i = 0; i < customers.length; i += CHUNK_SIZE) {
+            const batch = customers.slice(i, i + CHUNK_SIZE);
+            await customersApi.bulkCreate(batch);
+            totalImported += batch.length;
+          }
+
+          showToast(`Imported ${totalImported} customers`);
           loadCustomers();
         } catch (err) {
           showToast('Failed to import customers', 'error');
