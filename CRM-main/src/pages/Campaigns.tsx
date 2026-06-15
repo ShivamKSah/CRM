@@ -288,6 +288,7 @@ function CreateCampaignModal({
   const [segmentId, setSegmentId] = useState(matchedSegment?.id || '');
   const [channel, setChannel] = useState(prefill?.channel || 'sms');
   const [message, setMessage] = useState(prefill?.message || '');
+  const [campaignGoal, setCampaignGoal] = useState('');
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [campaignId, setCampaignId] = useState<string | null>(null);
@@ -316,15 +317,14 @@ function CreateCampaignModal({
   const handleGenerateMessage = async () => {
     if (!campaignId) return;
 
+    if (!campaignGoal.trim()) {
+      showToast('Please describe the campaign goal first', 'error');
+      return;
+    }
+
     setGenerating(true);
     try {
-      const goal = prompt('Describe the campaign goal:', 'Win-back message for inactive customers');
-      if (!goal) {
-        setGenerating(false);
-        return;
-      }
-
-      const result = await campaignsApi.generateMessage(campaignId, goal, channel);
+      const result = await campaignsApi.generateMessage(campaignId, campaignGoal, channel);
       setMessage(result.message);
     } catch (err) {
       showToast('Failed to generate message', 'error');
@@ -445,6 +445,16 @@ function CreateCampaignModal({
 
           {step === 2 && (
             <>
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Campaign Goal (for AI)</label>
+                <input
+                  type="text"
+                  value={campaignGoal}
+                  onChange={e => setCampaignGoal(e.target.value)}
+                  placeholder="Describe the campaign goal (e.g. Win-back inactive customers)"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                />
+              </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-slate-700">Message Template</label>
