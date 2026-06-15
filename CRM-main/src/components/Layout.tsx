@@ -7,7 +7,7 @@ import {
   Megaphone,
   Menu,
   X,
-  Leaf,
+  Sparkle,
   Sparkles,
 } from 'lucide-react';
 import AIAssistantPanel from './AIAssistantPanel';
@@ -41,8 +41,8 @@ export default function Layout() {
       >
         <div className="flex items-center justify-between p-6 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-600/20">
-              <Leaf className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center shadow-md shadow-violet-600/20">
+              <Sparkle className="w-5 h-5 text-white" fill="white" />
             </div>
             <div>
               <span className="block text-xl font-bold text-slate-900 tracking-tight leading-none">Aura</span>
