@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased selection:bg-indigo-500/20 selection:text-indigo-900;
+    @apply bg-[#FAF9F5] text-[#1F1E1D] antialiased;
   }
 }
 
@@ -27,10 +27,10 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-slate-100 rounded;
+    @apply bg-[#FAF9F5] rounded;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 rounded hover:bg-slate-400;
+    @apply bg-[#E8E6DE] rounded hover:bg-[#C96442]/30;
   }
 }

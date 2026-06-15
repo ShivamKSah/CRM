@@ -20,11 +20,11 @@ const STARTER_PROMPTS = [
 
 function ThinkingDots() {
   return (
-    <div className="flex items-center gap-1.5 px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl rounded-bl-md w-fit">
+    <div className="flex items-center gap-1.5 px-4 py-3 bg-[#FAF9F5] border border-[#E8E6DE] rounded-2xl rounded-bl-md w-fit">
       {[0, 1, 2].map(i => (
         <span
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"
+          className="w-1.5 h-1.5 rounded-full bg-[#C96442] animate-pulse"
           style={{ animationDelay: `${i * 150}ms` }}
         />
       ))}
@@ -49,7 +49,7 @@ function ActionButtons({
             <button
               key={idx}
               onClick={() => onCreateSegment(action)}
-              className="px-3 py-1.5 text-xs font-medium rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 hover:border-cyan-300 transition-colors shadow-sm"
+              className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#7A8B6F]/10 text-[#7A8B6F] border border-[#7A8B6F]/20 hover:bg-[#7A8B6F]/15 hover:border-[#7A8B6F]/30 transition-colors shadow-sm"
             >
               Create this segment →
             </button>
@@ -60,7 +60,7 @@ function ActionButtons({
             <button
               key={idx}
               onClick={() => onCreateCampaign(action)}
-              className="px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 hover:border-indigo-300 transition-colors shadow-sm"
+              className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#C96442]/10 text-[#C96442] border border-[#C96442]/20 hover:bg-[#C96442]/15 hover:border-[#C96442]/30 transition-colors shadow-sm"
             >
               Set up this campaign →
             </button>
@@ -165,8 +165,8 @@ export default function AIAssistantPanel() {
         aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
         className={`fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 hover:scale-110 ${
           isOpen
-            ? 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
-            : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-500/25'
+            ? 'bg-white text-[#1F1E1D] border border-[#E8E6DE] hover:bg-[#FAF9F5]'
+            : 'bg-[#C96442] text-white hover:bg-[#B85638] shadow-[#C96442]/25'
         }`}
       >
         {isOpen ? <X className="w-6 h-6" /> : <Sparkles className="w-6 h-6" />}
@@ -175,7 +175,7 @@ export default function AIAssistantPanel() {
       {/* Panel backdrop on mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55] lg:hidden"
           onClick={() => setIsOpen(false)}
           aria-hidden
         />
@@ -183,25 +183,25 @@ export default function AIAssistantPanel() {
 
       {/* Side panel */}
       <aside
-        className={`fixed inset-y-0 right-0 z-[58] w-[380px] max-w-[100vw] bg-white border-l border-slate-200 shadow-[-10px_0_30px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 right-0 z-[58] w-[380px] max-w-[100vw] bg-white border-l border-[#E8E6DE] shadow-[-10px_0_30px_rgba(0,0,0,0.06)] flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-5 border-b border-slate-200 bg-slate-50 shrink-0">
+        <div className="flex items-center justify-between px-5 py-5 border-b border-[#E8E6DE] bg-[#FAF9F5] shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center border border-indigo-100 shadow-sm">
-              <Sparkles className="w-5 h-5 text-indigo-600" />
+            <div className="w-10 h-10 rounded-xl bg-[#C96442]/10 flex items-center justify-center border border-[#C96442]/20 shadow-sm">
+              <Sparkles className="w-5 h-5 text-[#C96442]" />
             </div>
             <div>
-              <h2 className="text-slate-900 font-bold text-sm tracking-tight">AI Assistant</h2>
-              <p className="text-xs text-slate-500 font-medium">Aura AI</p>
+              <h2 className="text-[#1F1E1D] font-bold text-sm tracking-tight">AI Assistant</h2>
+              <p className="text-xs text-[#6B6B6B] font-medium">Aura AI</p>
             </div>
           </div>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="text-slate-500 hover:text-slate-900 p-1.5 hover:bg-slate-200 rounded-lg transition-all"
+            className="text-[#6B6B6B] hover:text-[#1F1E1D] p-1.5 hover:bg-[#E8E6DE] rounded-lg transition-all"
             aria-label="Close panel"
           >
             <X className="w-5 h-5" />
@@ -212,7 +212,7 @@ export default function AIAssistantPanel() {
         <div className="flex-1 overflow-y-auto p-5 space-y-5 scrollbar-thin">
           {messages.length === 0 && !isLoading && (
             <div className="space-y-4">
-              <p className="text-sm text-slate-500 text-center pt-2 pb-2">
+              <p className="text-sm text-[#6B6B6B] text-center pt-2 pb-2">
                 Ask me about segments, campaigns, or performance.
               </p>
               <div className="flex flex-col gap-2.5">
@@ -221,7 +221,7 @@ export default function AIAssistantPanel() {
                     key={prompt}
                     type="button"
                     onClick={() => sendMessage(prompt)}
-                    className="text-left text-sm px-4 py-3 rounded-xl bg-white text-slate-700 border border-slate-200 hover:border-indigo-300 hover:bg-slate-50 transition-all shadow-sm"
+                    className="text-left text-sm px-4 py-3 rounded-xl bg-white text-[#1F1E1D] border border-[#E8E6DE] hover:border-[#C96442]/30 hover:bg-[#FAF9F5] transition-all shadow-sm"
                   >
                     {prompt}
                   </button>
@@ -238,8 +238,8 @@ export default function AIAssistantPanel() {
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed ${
                   msg.role === 'user'
-                    ? 'bg-indigo-600 text-white rounded-br-sm shadow-md'
-                    : 'bg-slate-50 border border-slate-200 text-slate-700 rounded-bl-sm shadow-sm'
+                    ? 'bg-[#C96442] text-white rounded-br-sm shadow-md'
+                    : 'bg-[#FAF9F5] border border-[#E8E6DE] text-[#1F1E1D] rounded-bl-sm shadow-sm'
                 }`}
               >
                 {msg.content}
@@ -266,7 +266,7 @@ export default function AIAssistantPanel() {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-slate-200 shrink-0 bg-white">
+        <div className="p-4 border-t border-[#E8E6DE] shrink-0 bg-white">
           <div className="flex gap-2">
             <label htmlFor="ai-chat-input" className="sr-only">Message AI Assistant</label>
             <input
@@ -282,19 +282,19 @@ export default function AIAssistantPanel() {
               }}
               placeholder="Ask me anything..."
               disabled={isLoading}
-              className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 transition-all shadow-sm"
+              className="flex-1 bg-white border border-[#E8E6DE] rounded-xl px-4 py-3 text-sm text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] disabled:opacity-50 transition-all shadow-sm"
             />
             <button
               type="button"
               onClick={() => sendMessage(input)}
               disabled={isLoading || !input.trim()}
-              className="px-4 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center font-medium"
+              className="px-4 py-3 bg-[#C96442] text-white rounded-xl hover:bg-[#B85638] hover:shadow-lg hover:shadow-[#C96442]/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center font-medium"
               aria-label="Send message"
             >
               <Send className="w-5 h-5" />
             </button>
           </div>
-          <p className="text-[10px] text-slate-500 text-center mt-3 font-medium uppercase tracking-widest">Powered by Gemini</p>
+          <p className="text-[10px] text-[#6B6B6B] text-center mt-3 font-medium uppercase tracking-widest">Powered by Gemini</p>
         </div>
       </aside>
     </>

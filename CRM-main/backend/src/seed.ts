@@ -241,10 +241,34 @@ export async function runSeed(supabase?: SupabaseClient): Promise<SeedResult> {
     throw new Error(`Failed to insert orders: ${orderError.message}`);
   }
 
-  const uniqueCustomerIds = [...new Set(orders.map(o => o.customer_id))];
-  for (const customerId of uniqueCustomerIds) {
-    await updateCustomerStats(client, customerId);
+  const customerStats = new Map<string, { totalOrders: number; totalSpend: number; lastOrderDate: string }>();
+  for (const order of orders) {
+    const cid = order.customer_id;
+    if (!customerStats.has(cid)) {
+      customerStats.set(cid, { totalOrders: 0, totalSpend: 0, lastOrderDate: '' });
+    }
+    const stats = customerStats.get(cid)!;
+    stats.totalOrders++;
+    stats.totalSpend += order.amount;
+    const dateStr = order.created_at.split('T')[0];
+    if (!stats.lastOrderDate || dateStr > stats.lastOrderDate) {
+      stats.lastOrderDate = dateStr;
+    }
   }
+
+  await Promise.all(
+    Array.from(customerStats.entries()).map(async ([customerId, stats]) => {
+      await client
+        .from('customers')
+        .update({
+          total_orders: stats.totalOrders,
+          total_spend: parseFloat(stats.totalSpend.toFixed(2)),
+          last_order_date: stats.lastOrderDate,
+        })
+        .eq('id', customerId);
+    })
+  );
+
 
   let segmentsCreated = 0;
   for (const segment of PREBUILT_SEGMENTS) {
@@ -264,6 +288,9 @@ export async function runSeed(supabase?: SupabaseClient): Promise<SeedResult> {
     segmentsCreated++;
   }
 
+  // Create and launch campaigns to populate analytics charts automatically
+  await runCampaignSeed(client);
+
   return {
     skipped: false,
     message: 'Seed data generated successfully',
@@ -271,6 +298,135 @@ export async function runSeed(supabase?: SupabaseClient): Promise<SeedResult> {
     orders: insertedOrders?.length ?? 800,
     segments: segmentsCreated,
   };
+}
+
+async function getMatchingCustomersForClient(
+  supabase: SupabaseClient,
+  filterRules: Record<string, any>
+): Promise<any[]> {
+  let query = supabase.from('customers').select('id, name, city');
+
+  if (filterRules.min_spend !== undefined) {
+    query = query.gte('total_spend', filterRules.min_spend as number);
+  }
+  if (filterRules.max_orders !== undefined) {
+    query = query.lte('total_orders', filterRules.max_orders as number);
+  }
+  if (filterRules.min_orders !== undefined) {
+    query = query.gte('total_orders', filterRules.min_orders as number);
+  }
+  if (filterRules.last_order_before_days !== undefined) {
+    const date = new Date();
+    date.setDate(date.getDate() - (filterRules.last_order_before_days as number));
+    query = query.lte('last_order_date', date.toISOString().split('T')[0]);
+  }
+  if (filterRules.last_order_after_days !== undefined) {
+    const date = new Date();
+    date.setDate(date.getDate() - (filterRules.last_order_after_days as number));
+    query = query.gte('last_order_date', date.toISOString().split('T')[0]);
+  }
+  if (Array.isArray(filterRules.cities) && filterRules.cities.length > 0) {
+    query = query.in('city', filterRules.cities as string[]);
+  }
+  if (Array.isArray(filterRules.tags) && filterRules.tags.length > 0) {
+    query = query.contains('tags', filterRules.tags as string[]);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data ?? [];
+}
+
+async function runCampaignSeed(client: SupabaseClient) {
+  const { data: segments } = await client
+    .from('segments')
+    .select('*')
+    .gt('customer_count', 0)
+    .limit(3);
+
+  if (!segments || segments.length === 0) return;
+
+  const campaignsToCreate = [
+    {
+      name: 'Summer Flash Sale',
+      channel: 'whatsapp',
+      message_template: 'Hey {name}, our Summer Flash Sale is live! Use code SUMMER20 for 20% off your next purchase.'
+    },
+    {
+      name: 'We Miss You!',
+      channel: 'email',
+      message_template: 'Hi {name}, we noticed you haven\'t shopped with us in a while. Come back and enjoy free shipping on your next order!'
+    },
+    {
+      name: 'Exclusive VIP Offer',
+      channel: 'sms',
+      message_template: '{name}, as a VIP, you get early access to our new collection! Check it out now.'
+    }
+  ];
+
+  for (let i = 0; i < Math.min(segments.length, campaignsToCreate.length); i++) {
+    const segment = segments[i];
+    const template = campaignsToCreate[i];
+
+    // 1. Create Campaign
+    const { data: campaign, error: campError } = await client
+      .from('campaigns')
+      .insert({
+        name: template.name,
+        segment_id: segment.id,
+        channel: template.channel,
+        message_template: template.message_template,
+        status: 'running',
+      })
+      .select()
+      .single();
+
+    if (campError || !campaign) continue;
+
+    // Create campaign stats
+    await client.from('campaign_stats').insert({ campaign_id: campaign.id });
+
+    // 2. Get matching customers
+    const customers = await getMatchingCustomersForClient(client, segment.filter_rules);
+    if (customers.length === 0) continue;
+
+    // 3. Build and insert communications
+    const communicationRows = customers.map(customer => ({
+      campaign_id: campaign.id,
+      customer_id: customer.id,
+      channel: campaign.channel,
+      message: campaign.message_template
+        .replace(/{name}/g, customer.name)
+        .replace(/{city}/g, customer.city || ''),
+      status: 'queued',
+    }));
+
+    const { data: insertedComms } = await client
+      .from('communications')
+      .insert(communicationRows)
+      .select('id, customer_id, channel, message');
+
+    // 4. Recalculate and Dispatch
+    const { scheduleRecalculateCampaignStats } = await import('./services/campaignStats.js');
+    const { dispatchToChannelService } = await import('./services/channelDispatch.js');
+
+    scheduleRecalculateCampaignStats(campaign.id);
+
+    const channelServiceUrl = process.env.CHANNEL_SERVICE_URL || 'http://localhost:3001';
+    if (insertedComms?.length) {
+      dispatchToChannelService(
+        insertedComms.map(comm => ({
+          communication_id: comm.id,
+          customer_id: comm.customer_id,
+          channel: comm.channel,
+          message: comm.message,
+        })),
+        channelServiceUrl
+      );
+    }
+  }
 }
 
 /** Uses shared matching logic with the provided Supabase client. */

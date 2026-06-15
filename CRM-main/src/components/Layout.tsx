@@ -13,14 +13,14 @@ import {
 import AIAssistantPanel from './AIAssistantPanel';
 
 const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/customers', icon: Users, label: 'Customers' },
   { to: '/segments', icon: Target, label: 'Segments' },
   { to: '/campaigns', icon: Megaphone, label: 'Campaigns' },
 ];
 
 function getPageTitle(pathname: string) {
-  if (pathname === '/') return 'Dashboard';
+  if (pathname === '/dashboard') return 'Dashboard';
   if (pathname.startsWith('/customers')) return 'Customers';
   if (pathname.startsWith('/segments')) return 'Segments';
   if (pathname.startsWith('/campaigns')) return 'Campaigns';
@@ -32,26 +32,26 @@ export default function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-slate-50 flex text-slate-700">
+    <div className="min-h-screen bg-[#FAF9F5] flex text-[#1F1E1D]">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 flex flex-col ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#FAF9F5] border-r border-[#E8E6DE] transform transition-transform duration-300 flex flex-col ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
+        <div className="flex items-center justify-between p-6 border-b border-[#E8E6DE]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center shadow-md shadow-violet-600/20">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C96442] to-[#E8845C] flex items-center justify-center shadow-md shadow-[#C96442]/20">
               <Sparkle className="w-5 h-5 text-white" fill="white" />
             </div>
             <div>
-              <span className="block text-xl font-bold text-slate-900 tracking-tight leading-none">Aura</span>
-              <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold">CRM</span>
+              <span className="block text-xl font-bold text-[#1F1E1D] tracking-tight leading-none">Aura</span>
+              <span className="text-xs text-[#6B6B6B] uppercase tracking-widest font-semibold">CRM</span>
             </div>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-slate-400 hover:text-slate-600 transition-colors"
+            className="lg:hidden text-[#6B6B6B] hover:text-[#1F1E1D] transition-colors"
             aria-label="Close sidebar"
           >
             <X className="w-5 h-5" />
@@ -67,8 +67,8 @@ export default function Layout() {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-indigo-50 text-indigo-700 border-l-2 border-indigo-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-l-2 border-transparent'
+                    ? 'bg-[#C96442]/10 text-[#C96442] border-l-[3px] border-[#C96442] shadow-sm'
+                    : 'text-[#6B6B6B] hover:text-[#1F1E1D] hover:bg-[#F5F3ED] border-l-[3px] border-transparent'
                 }`
               }
             >
@@ -78,10 +78,10 @@ export default function Layout() {
           ))}
         </nav>
         
-        <div className="p-4 border-t border-slate-100">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 border border-slate-200">
-            <Sparkles className="w-4 h-4 text-indigo-500" />
-            <span className="text-xs font-medium text-slate-600">AI-Powered CRM</span>
+        <div className="p-4 border-t border-[#E8E6DE]">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F5F3ED] border border-[#E8E6DE]">
+            <Sparkles className="w-4 h-4 text-[#C96442]" />
+            <span className="text-xs font-medium text-[#6B6B6B]">AI-Powered CRM</span>
           </div>
         </div>
       </aside>
@@ -89,23 +89,23 @@ export default function Layout() {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-[#1F1E1D]/40 z-30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col min-h-screen bg-slate-50 lg:ml-64">
-        <header className="sticky top-0 z-20 flex items-center px-4 lg:px-8 h-16 bg-white/80 backdrop-blur-xl border-b border-slate-200">
+      <main className="flex-1 flex flex-col min-h-screen bg-[#FAF9F5] lg:ml-64">
+        <header className="sticky top-0 z-20 flex items-center px-4 lg:px-8 h-16 bg-[#FAF9F5]/80 backdrop-blur-xl border-b border-[#E8E6DE]">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden text-slate-500 hover:text-slate-900 mr-4 transition-colors"
+            className="lg:hidden text-[#6B6B6B] hover:text-[#1F1E1D] mr-4 transition-colors"
             aria-label="Open sidebar menu"
           >
             <Menu className="w-6 h-6" />
           </button>
           <div className="flex-1">
-            <h2 className="text-lg font-semibold text-slate-900 tracking-wide">
+            <h2 className="text-lg font-semibold text-[#1F1E1D] tracking-wide">
               {getPageTitle(location.pathname)}
             </h2>
           </div>

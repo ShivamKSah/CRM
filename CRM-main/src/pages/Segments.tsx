@@ -46,10 +46,10 @@ export default function Segments() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Segments</h1>
+        <h1 className="text-2xl font-bold text-[#1F1E1D] tracking-tight">Segments</h1>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 font-medium"
+          className="flex items-center gap-2 px-6 py-2.5 bg-[#C96442] text-white rounded-xl hover:bg-[#B85638] hover:shadow-lg hover:shadow-[#C96442]/20 transition-all duration-300 font-medium"
         >
           <Plus className="w-5 h-5" />
           New Segment
@@ -58,20 +58,20 @@ export default function Segments() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C96442]" />
         </div>
       ) : segments.length === 0 ? (
-        <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-16 text-center">
-          <div className="w-20 h-20 rounded-full bg-indigo-50 flex items-center justify-center mx-auto mb-6 border border-indigo-100">
-            <Target className="w-10 h-10 text-indigo-500" />
+        <div className="bg-white border border-[#E8E6DE] shadow-sm rounded-2xl p-16 text-center">
+          <div className="w-20 h-20 rounded-full bg-[#C96442]/10 flex items-center justify-center mx-auto mb-6 border border-[#C96442]/20">
+            <Target className="w-10 h-10 text-[#C96442]" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">No segments yet</h3>
-          <p className="text-slate-500 mb-8 max-w-md mx-auto">
+          <h3 className="text-xl font-bold text-[#1F1E1D] mb-3">No segments yet</h3>
+          <p className="text-[#6B6B6B] mb-8 max-w-md mx-auto">
             Create segments to group customers for targeted campaigns based on their spending and behavior.
           </p>
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 font-medium"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#C96442] text-white rounded-xl hover:bg-[#B85638] hover:shadow-lg hover:shadow-[#C96442]/20 transition-all duration-300 font-medium"
           >
             <Plus className="w-5 h-5" />
             Create First Segment
@@ -83,23 +83,23 @@ export default function Segments() {
             {segments.map(segment => (
               <div
                 key={segment.id}
-                className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 relative group hover:border-indigo-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                className="bg-white border border-[#E8E6DE] shadow-sm rounded-2xl p-6 relative group hover:border-[#C96442]/30 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center">
-                      <Target className="w-6 h-6 text-indigo-600" />
+                    <div className="w-12 h-12 rounded-full bg-[#7A8B6F]/10 flex items-center justify-center">
+                      <Target className="w-6 h-6 text-[#7A8B6F]" />
                     </div>
                     <div>
-                      <h3 className="text-slate-900 font-bold tracking-tight text-lg">{segment.name}</h3>
-                      <p className="text-xs text-slate-500 font-medium tracking-wider uppercase mt-0.5">
+                      <h3 className="text-[#1F1E1D] font-bold tracking-tight text-lg">{segment.name}</h3>
+                      <p className="text-xs text-[#6B6B6B] font-medium tracking-wider uppercase mt-0.5">
                         {segment.created_by === 'ai' ? 'AI-assisted' : 'Manual'}
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => handleDelete(segment.id)}
-                    className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg"
+                    className="text-[#6B6B6B] hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg"
                     aria-label={`Delete segment ${segment.name}`}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -107,39 +107,39 @@ export default function Segments() {
                 </div>
 
                 {segment.description && (
-                  <p className="text-slate-600 text-sm mb-5 leading-relaxed">{segment.description}</p>
+                  <p className="text-[#6B6B6B] text-sm mb-5 leading-relaxed">{segment.description}</p>
                 )}
 
                 <div className="flex items-center gap-2 mb-5 text-sm font-medium">
-                  <div className="flex items-center gap-1.5 text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100">
-                    <Users className="w-4 h-4 text-indigo-500" />
+                  <div className="flex items-center gap-1.5 text-[#C96442] bg-[#C96442]/10 px-3 py-1.5 rounded-lg border border-[#C96442]/20">
+                    <Users className="w-4 h-4 text-[#C96442]" />
                     <span>{segment.customer_count} matched</span>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                   {segment.filter_rules?.min_spend !== undefined && (
-                    <span className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
+                    <span className="px-2.5 py-1 text-xs bg-[#FAF9F5] border border-[#E8E6DE] text-[#6B6B6B] rounded-full">
                     Min ₹{segment.filter_rules.min_spend}
                   </span>
                 )}
                   {segment.filter_rules?.max_spend !== undefined && (
-                    <span className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
+                    <span className="px-2.5 py-1 text-xs bg-[#FAF9F5] border border-[#E8E6DE] text-[#6B6B6B] rounded-full">
                       Max ₹{segment.filter_rules.max_spend}
                     </span>
                   )}
                   {segment.filter_rules?.last_order_before_days !== undefined && (
-                    <span className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
+                    <span className="px-2.5 py-1 text-xs bg-[#FAF9F5] border border-[#E8E6DE] text-[#6B6B6B] rounded-full">
                       Idle {segment.filter_rules.last_order_before_days}+ days
                     </span>
                   )}
                   {segment.filter_rules?.cities && segment.filter_rules.cities.length > 0 && (
-                    <span className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
+                    <span className="px-2.5 py-1 text-xs bg-[#FAF9F5] border border-[#E8E6DE] text-[#6B6B6B] rounded-full">
                       {segment.filter_rules.cities.join(', ')}
                     </span>
                   )}
                   {segment.filter_rules?.tags && segment.filter_rules.tags.length > 0 && (
-                    <span className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
+                    <span className="px-2.5 py-1 text-xs bg-[#FAF9F5] border border-[#E8E6DE] text-[#6B6B6B] rounded-full">
                       {segment.filter_rules.tags.join(', ')}
                     </span>
                   )}
@@ -150,15 +150,15 @@ export default function Segments() {
 
           {totalSegments > PAGE_SIZE && (
             <div className="flex items-center justify-between">
-              <p className="text-sm text-slate-500">
-                Page <span className="text-slate-900 font-medium">{page + 1}</span> of <span className="text-slate-900 font-medium">{totalPages}</span>
+              <p className="text-sm text-[#6B6B6B]">
+                Page <span className="text-[#1F1E1D] font-medium">{page + 1}</span> of <span className="text-[#1F1E1D] font-medium">{totalPages}</span>
               </p>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setPage(p => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl bg-white border border-[#E8E6DE] text-[#1F1E1D] hover:bg-[#FAF9F5] shadow-sm disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   Prev
@@ -167,7 +167,7 @@ export default function Segments() {
                   type="button"
                   onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                   disabled={page >= totalPages - 1}
-                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl bg-white border border-[#E8E6DE] text-[#1F1E1D] hover:bg-[#FAF9F5] shadow-sm disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 >
                   Next
                   <ChevronRight className="w-4 h-4" />
@@ -245,24 +245,24 @@ function CreateSegmentModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-label="Create segment" onKeyDown={e => { if (e.key === 'Escape') onClose(); }}>
-      <div className="bg-white rounded-3xl max-w-xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight">Create Segment</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors" aria-label="Close create segment dialog">
+    <div className="fixed inset-0 bg-[#1F1E1D]/40 backdrop-blur-sm flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-label="Create segment" onKeyDown={e => { if (e.key === 'Escape') onClose(); }}>
+      <div className="bg-white rounded-2xl max-w-xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col border border-[#E8E6DE]">
+        <div className="flex items-center justify-between p-6 border-b border-[#E8E6DE]">
+          <h2 className="text-xl font-bold text-[#1F1E1D] tracking-tight">Create Segment</h2>
+          <button onClick={onClose} className="text-[#6B6B6B] hover:text-[#1F1E1D] transition-colors" aria-label="Close create segment dialog">
             <X className="w-6 h-6" />
           </button>
         </div>
 
         <div className="p-6 space-y-6 overflow-y-auto">
           {/* Mode Toggle */}
-          <div className="flex bg-slate-100 rounded-xl p-1 border border-slate-200">
+          <div className="flex bg-[#FAF9F5] rounded-xl p-1 border border-[#E8E6DE]">
             <button
               onClick={() => setMode('manual')}
               className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
                 mode === 'manual'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-white text-[#1F1E1D] shadow-sm'
+                  : 'text-[#6B6B6B] hover:text-[#1F1E1D]'
               }`}
             >
               Manual
@@ -271,8 +271,8 @@ function CreateSegmentModal({
               onClick={() => setMode('ai')}
               className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 mode === 'ai'
-                  ? 'bg-indigo-50 text-indigo-700 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-[#C96442]/10 text-[#C96442] shadow-sm'
+                  : 'text-[#6B6B6B] hover:text-[#1F1E1D]'
               }`}
             >
               <Sparkles className="w-4 h-4" />
@@ -282,43 +282,43 @@ function CreateSegmentModal({
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Segment Name</label>
+            <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Segment Name</label>
             <input
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="e.g., High Value Customers"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+              className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Description (optional)</label>
+            <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Description (optional)</label>
             <input
               type="text"
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder="Brief description"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+              className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
             />
           </div>
 
           {mode === 'ai' ? (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Describe your segment</label>
+                <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Describe your segment</label>
                 <textarea
                   value={aiPrompt}
                   onChange={e => setAiPrompt(e.target.value)}
                   placeholder="e.g., Customers who haven't purchased in 60 days and spent over ₹5000"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 h-28 resize-none transition-all"
+                  className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] h-28 resize-none transition-all"
                 />
               </div>
               <button
                 onClick={handleAiSuggest}
                 disabled={aiLoading || !aiPrompt.trim()}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 disabled:opacity-50 transition-all font-medium"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#C96442]/10 text-[#C96442] rounded-xl hover:bg-[#C96442]/15 disabled:opacity-50 transition-all font-medium"
               >
                 {aiLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -328,8 +328,8 @@ function CreateSegmentModal({
                 Generate Rules with AI
               </button>
               {previewCount !== null && (
-                <p className="text-sm text-slate-600 text-center bg-slate-50 py-2 rounded-lg border border-slate-200">
-                  Matches <span className="text-indigo-600 font-bold mx-1">{previewCount}</span> customers
+                <p className="text-sm text-[#6B6B6B] text-center bg-[#FAF9F5] py-2 rounded-lg border border-[#E8E6DE]">
+                  Matches <span className="text-[#C96442] font-bold mx-1">{previewCount}</span> customers
                 </p>
               )}
             </div>
@@ -339,36 +339,36 @@ function CreateSegmentModal({
 
           {/* Preview Rules */}
           {Object.keys(rules).length > 0 && (
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-sm">
-              <p className="text-sm text-slate-500 mb-3 font-medium uppercase tracking-widest">Active Filters</p>
+            <div className="bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl p-5 shadow-sm">
+              <p className="text-sm text-[#6B6B6B] mb-3 font-medium uppercase tracking-widest">Active Filters</p>
               <div className="flex flex-wrap gap-2">
                 {rules.min_spend !== undefined && (
-                  <span className="px-3 py-1.5 text-xs bg-white border border-slate-200 text-slate-700 rounded-full">
+                  <span className="px-3 py-1.5 text-xs bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-full">
                     Min Spend: ₹{rules.min_spend}
                   </span>
                 )}
                 {rules.max_spend !== undefined && (
-                  <span className="px-3 py-1.5 text-xs bg-white border border-slate-200 text-slate-700 rounded-full">
+                  <span className="px-3 py-1.5 text-xs bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-full">
                     Max Spend: ₹{rules.max_spend}
                   </span>
                 )}
                 {rules.min_orders !== undefined && (
-                  <span className="px-3 py-1.5 text-xs bg-white border border-slate-200 text-slate-700 rounded-full">
+                  <span className="px-3 py-1.5 text-xs bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-full">
                     Min Orders: {rules.min_orders}
                   </span>
                 )}
                 {rules.last_order_before_days !== undefined && (
-                  <span className="px-3 py-1.5 text-xs bg-white border border-slate-200 text-slate-700 rounded-full">
+                  <span className="px-3 py-1.5 text-xs bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-full">
                     Last Order: {rules.last_order_before_days}+ days ago
                   </span>
                 )}
                 {rules.cities && rules.cities.length > 0 && (
-                  <span className="px-3 py-1.5 text-xs bg-white border border-slate-200 text-slate-700 rounded-full">
+                  <span className="px-3 py-1.5 text-xs bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-full">
                     Cities: {rules.cities.join(', ')}
                   </span>
                 )}
                 {rules.tags && rules.tags.length > 0 && (
-                  <span className="px-3 py-1.5 text-xs bg-white border border-slate-200 text-slate-700 rounded-full">
+                  <span className="px-3 py-1.5 text-xs bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-full">
                     Tags: {rules.tags.join(', ')}
                   </span>
                 )}
@@ -377,17 +377,17 @@ function CreateSegmentModal({
           )}
         </div>
 
-        <div className="flex justify-end gap-3 p-6 border-t border-slate-100 bg-slate-50">
+        <div className="flex justify-end gap-3 p-6 border-t border-[#E8E6DE] bg-[#FAF9F5]">
           <button
             onClick={onClose}
-            className="px-6 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 transition-all font-medium"
+            className="px-6 py-2.5 bg-white border border-[#E8E6DE] text-[#1F1E1D] rounded-xl hover:bg-[#FAF9F5] transition-all font-medium"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={saving || !name.trim()}
-            className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:opacity-50 shadow-sm transition-all font-medium"
+            className="flex items-center gap-2 px-6 py-2.5 bg-[#C96442] text-white rounded-xl hover:bg-[#B85638] disabled:opacity-50 shadow-sm transition-all font-medium"
           >
             {saving && <Loader2 className="w-4 h-4 animate-spin" />}
             Create Segment
@@ -413,7 +413,7 @@ function ManualRulesEditor({
     <div className="space-y-5">
       <div className="grid grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Min Spend (₹)</label>
+          <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Min Spend (₹)</label>
           <input
             type="number"
             value={rules.min_spend || ''}
@@ -421,11 +421,11 @@ function ManualRulesEditor({
               updateRule('min_spend', e.target.value ? parseInt(e.target.value) : undefined)
             }
             placeholder="0"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+            className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Max Spend (₹)</label>
+          <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Max Spend (₹)</label>
           <input
             type="number"
             value={rules.max_spend || ''}
@@ -433,14 +433,14 @@ function ManualRulesEditor({
               updateRule('max_spend', e.target.value ? parseInt(e.target.value) : undefined)
             }
             placeholder="100000"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+            className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Min Orders</label>
+          <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Min Orders</label>
           <input
             type="number"
             value={rules.min_orders || ''}
@@ -448,11 +448,11 @@ function ManualRulesEditor({
               updateRule('min_orders', e.target.value ? parseInt(e.target.value) : undefined)
             }
             placeholder="0"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+            className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Idle Time (days+)</label>
+          <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Idle Time (days+)</label>
           <input
             type="number"
             value={rules.last_order_before_days || ''}
@@ -463,13 +463,13 @@ function ManualRulesEditor({
               )
             }
             placeholder="30"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+            className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Cities</label>
+        <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Cities</label>
         <select
           multiple
           value={rules.cities || []}
@@ -477,7 +477,7 @@ function ManualRulesEditor({
             const selected = Array.from(e.target.selectedOptions, option => option.value);
             updateRule('cities', selected.length > 0 ? selected : undefined);
           }}
-          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 h-32 transition-all"
+          className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] h-32 transition-all"
         >
           <option value="Mumbai" className="py-1">Mumbai</option>
           <option value="Delhi" className="py-1">Delhi</option>
@@ -487,11 +487,11 @@ function ManualRulesEditor({
           <option value="Pune" className="py-1">Pune</option>
           <option value="Kolkata" className="py-1">Kolkata</option>
         </select>
-        <p className="text-xs text-slate-500 mt-2 text-right">Hold Ctrl/Cmd to select multiple</p>
+        <p className="text-xs text-[#6B6B6B] mt-2 text-right">Hold Ctrl/Cmd to select multiple</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Tags</label>
+        <label className="block text-sm font-medium text-[#1F1E1D] mb-2">Tags</label>
         <input
           type="text"
           value={(rules.tags || []).join(', ')}
@@ -503,7 +503,7 @@ function ManualRulesEditor({
             updateRule('tags', tags.length > 0 ? tags : undefined);
           }}
           placeholder="vip, loyal, high_value"
-          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+          className="w-full bg-[#FAF9F5] border border-[#E8E6DE] rounded-xl px-4 py-3 text-[#1F1E1D] placeholder-[#6B6B6B] focus:outline-none focus:ring-1 focus:ring-[#C96442] focus:border-[#C96442] transition-all"
         />
       </div>
     </div>
